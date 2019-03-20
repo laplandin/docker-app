@@ -1,0 +1,33 @@
+version: '3.5'
+
+services: 
+  my-app:
+    container_name: my-app
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    working_dir: /home/www/app
+    networks:
+       - private_local
+    ports:
+       #- 9229:9229
+       - 3000:3000
+    volumes:
+       - ./:/home/www/app:delegated
+  my-mongo:
+    container_name: my-mongo
+    image: mongo:4.0
+    ports: 
+      - 17017:27017
+    networks:
+      - private_local
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+
+networks:
+  private_local:
+    driver: bridge
+    name: private_local
